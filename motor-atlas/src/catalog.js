@@ -29,8 +29,8 @@ const corolla = {
       description: 'Look inside the right-hand-drive cabin, with separate front seats, a rear bench, and a floor-mounted gear lever.',
     },
     {
-      id: 'drivetrain', contactOpacity: .18, direction: [2.0, 2.0, -4.75], name: 'Drivetrain', subtitle: 'Power transmission', icon: 'drivetrain',
-      description: 'Follow the path from the four-speed gearbox through the propeller shaft to the rear differential and axle.',
+      id: 'chassis', aliases: ['drivetrain'], contactOpacity: .55, direction: [2.6, 3.2, -4.9], name: 'Chassis', subtitle: 'Suspension & drivetrain', icon: 'chassis',
+      description: 'Follow the engine, gearbox, and propeller shaft to the rear axle. Orbit the exposed chassis to inspect the steering linkage, front struts, and rear leaf springs.',
     },
     {
       id: 'electrical', contactOpacity: .1, direction: [2.0, 3.45, -4.1], name: 'Electronics', subtitle: 'Wiring & ignition', icon: 'bolt',

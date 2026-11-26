@@ -1,7 +1,30 @@
 import { createKit } from './system-kit.js';
+import { axleOffset, tireRadius } from './wheels.js';
+
+export const crankHeight = 0.38;
+
+export function addBrakeDrum(kit, parent, x, y, side) {
+  const { group, finish, cylinder, turned } = kit;
+  const iron = finish(0x505d59, 0.63, 0.44);
+  const dark = finish(0x343e3d, 0.56, 0.43);
+  const machined = finish(0xc0c4ba, 0.74, 0.28);
+  const bronze = finish(0x998367, 0.61, 0.42);
+  cylinder([x,y,0.6*side],0.122,0.022,'z',dark,40,parent);
+  const drum = group('Brake drum and hub', parent);
+  drum.position.set(x,y,0.61*side);
+  drum.rotation.y=side<0 ? Math.PI : 0;
+  turned([0,0,0], [[0,0],[0,0.119],[0.014,0.126],[0.054,0.122],[0.063,0.104],[0.065,0.067],[0.076,0.057],[0.076,0]],'z',iron,drum,44);
+  for (const z of [0.017,0.029,0.041]) cylinder([0,0,z],0.127,0.004,'z',dark,44,drum);
+  cylinder([0,0,0.081],0.031,0.028,'z',machined,24,drum);
+  for (let i=0;i<4;i++) {
+    const angle=(i+0.5)*Math.PI/2;
+    cylinder([0.045*Math.cos(angle),0.045*Math.sin(angle),0.084],0.007,0.03,'z',bronze,12,drum);
+  }
+}
 
 export function buildDrivetrain(T) {
-  const { root, finish, group, box, cylinder, ellipsoid, rod, curve, turned } = createKit(T, 'Longitudinal drivetrain');
+  const kit = createKit(T, 'Longitudinal drivetrain');
+  const { root, finish, group, box, cylinder, ellipsoid, rod, curve, turned } = kit;
   const iron = finish(0x505d59, 0.63, 0.44);
   const alloy = finish(0x9caaa6, 0.62, 0.40);
   const machined = finish(0xc0c4ba, 0.74, 0.28);
@@ -10,9 +33,11 @@ export function buildDrivetrain(T) {
   const bronze = finish(0x998367, 0.61, 0.42);
   const springSteel = finish(0x535b50, 0.58, 0.41);
   const axisY = 0.32;
-  const axleX = -1.1425;
+  const axleX = -axleOffset;
+  root.position.y = tireRadius - axisY;
 
   const gears = group('Four-speed manual gearbox and clutch');
+  gears.position.y = crankHeight - tireRadius;
   turned([0,axisY,0], [
     [0.12,0],[0.12,0.044],[0.143,0.052],[0.161,0.052],[0.18,0.042],
     [0.27,0.052],[0.334,0.081],[0.353,0.084],[0.365,0.099],
@@ -49,7 +74,12 @@ export function buildDrivetrain(T) {
   rod([0.297,0.428,0],[0.222,0.573,0],0.008,machined,gears);
   box([0.412,0.244,0],[0.145,0.017,0.235],dark,0.007,gears);
 
-  const prop = group('Propeller shaft and universal joints');
+  const rearJointX = -0.87;
+  const shaftPivot = group('Propeller shaft and universal joints');
+  shaftPivot.position.set(rearJointX, axisY, 0);
+  shaftPivot.rotation.z = Math.atan2(gears.position.y, 0.12 - rearJointX);
+  const prop = group('Shaft and yokes', shaftPivot);
+  prop.position.set(-rearJointX, -axisY, 0);
   cylinder([-0.399,axisY,0],0.033,0.842,'x',dark,36,prop);
   for (const x of [-0.816,0.019]) cylinder([x,axisY,0],0.035,0.011,'x',bronze,32,prop);
   function universal(x) {
@@ -61,7 +91,7 @@ export function buildDrivetrain(T) {
     }
   }
   universal(0.075);
-  universal(-0.87);
+  universal(rearJointX);
   cylinder([0.119,axisY,0],0.029,0.045,'x',machined,24,prop);
   cylinder([-0.916,axisY,0],0.045,0.02,'x',machined,28,prop);
 
@@ -70,17 +100,7 @@ export function buildDrivetrain(T) {
   for (const side of [-1,1]) {
     cylinder([axleX,axisY,0.329*side],0.048,0.21,'z',iron,32,axle);
     cylinder([axleX,axisY,0.572*side],0.052,0.046,'z',iron,32,axle);
-    cylinder([axleX,axisY,0.6*side],0.122,0.022,'z',dark,40,axle);
-    const drum = group('Brake drum and hub', axle);
-    drum.position.set(axleX,axisY,0.61*side);
-    drum.rotation.y=side<0 ? Math.PI : 0;
-    turned([0,0,0], [[0,0],[0,0.119],[0.014,0.126],[0.054,0.122],[0.063,0.104],[0.065,0.067],[0.076,0.057],[0.076,0]],'z',iron,drum,44);
-    for (const z of [0.017,0.029,0.041]) cylinder([0,0,z],0.127,0.004,'z',dark,44,drum);
-    cylinder([0,0,0.081],0.031,0.028,'z',machined,24,drum);
-    for (let i=0;i<4;i++) {
-      const angle=(i+0.5)*Math.PI/2;
-      cylinder([0.045*Math.cos(angle),0.045*Math.sin(angle),0.084],0.007,0.03,'z',bronze,12,drum);
-    }
+    addBrakeDrum(kit, axle, axleX, axisY, side);
   }
   ellipsoid([axleX,axisY,0],[0.133,0.129,0.128],dark,axle);
   turned([axleX,axisY,0], [[0,0],[0,0.127],[0.028,0.135],[0.048,0.13],[0.081,0.108],[0.11,0.08],[0.147,0.063],[0.168,0.049],[0.194,0.043],[0.194,0]], 'x',iron,axle,40);

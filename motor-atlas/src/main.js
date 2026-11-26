@@ -28,7 +28,8 @@ function chooseModel(layerId) {
     span.textContent = item;
     $('vehicle-meta').append(span);
   }
-  options($('layer'), model.layers, l => l.name, layerId);
+  const selectedLayer = model.layers.find(l => l.id === layerId || l.aliases?.includes(layerId));
+  options($('layer'), model.layers, l => l.name, selectedLayer?.id);
   $('layer-cards').replaceChildren(...model.layers.map(l => {
     const card = document.createElement('button');
     card.type = 'button';

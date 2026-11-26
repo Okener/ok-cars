@@ -16,7 +16,7 @@ const paths = {
   scroll: '<rect x="6.5" y="3" width="11" height="18" rx="5.5"/><path d="M12 6.6v3.8"/>',
   seat: '<path d="m7 3 3 .7 2.7 9.5 6.3.7c2.7.3 2.2 4.5-.2 4.5h-8.2c-1.5 0-2.5-.9-2.8-2.3L5.2 5.5C4.8 4 5.7 3 7 3ZM8 21h12"/>',
   engine: '<path d="M5 8h3l2-3h5l2 3h2v3h2v6h-3l-2 2H8l-3-4V8ZM3 9v6m7-12h5"/>',
-  drivetrain: '<path d="m8 8 8 8m-6-10 8 8M4 8l5-5 3 3-5 5-3-3Zm9 10 5-5 3 3-5 5-3-3Z"/>',
+  chassis: '<path d="M9 5h6v14H9zM6 6h3m6 0h3M6 18h3m6 0h3M9 12h6"/><rect x="3" y="3" width="3" height="6" rx="1"/><rect x="18" y="3" width="3" height="6" rx="1"/><rect x="3" y="15" width="3" height="6" rx="1"/><rect x="18" y="15" width="3" height="6" rx="1"/>',
   bolt: '<path d="m13 2-9 12h6l-1 8L20 9h-7l1-7Z"/>',
   list: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8m-8 4h8m-8 4h5"/>',
   close: '<path d="m6 6 12 12m0-12L6 18"/>',

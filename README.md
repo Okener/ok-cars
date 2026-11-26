@@ -1,6 +1,6 @@
 # ok-cars
 
-Motor Atlas is a three-dimensional car teardown viewer. The first vehicle is a reconstruction of the 1966 Toyota Corolla E10 two-door sedan. Select its exterior, interior, drivetrain, electronics, or engine and drag the model to orbit.
+Motor Atlas is a three-dimensional car teardown viewer. The first vehicle is a reconstruction of the 1966 Toyota Corolla E10 two-door sedan. Select its exterior, interior, chassis, electronics, or engine and drag the model to orbit. The chassis view exposes the drivetrain from the engine to the rear axle, along with the wheels, brakes, suspension, steering, and underbody structure.
 
 ## Run locally
 

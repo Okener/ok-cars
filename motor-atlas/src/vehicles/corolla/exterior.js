@@ -1,3 +1,5 @@
+import { axleOffset as axle, buildWheels, tireRadius } from './wheels.js';
+
 // A dimensional interpretation of the 1966 KE10 two-door. All stations are in metres.
 // The bonnet, greenhouse and fenders share their boundary curves so the silhouette
 // stays continuous when viewed from the back, above and below.
@@ -19,9 +21,7 @@ export function buildExterior(THREE) {
   const satin = metal('Brushed aluminium', 0xb3bebd, 0.68, 0.29);
   const steel = metal('Graphite steel', 0x303838, 0.58, 0.31);
   const rubber = metal('Tire rubber', 0x202423, 0.02, 0.87);
-  const tread = metal('Raised tire lettering and beads', 0x343735, 0.02, 0.80);
   const black = metal('Gaskets and panel joints', 0x151d1d, 0.08, 0.67);
-  const ivory = metal('Ivory sidewall stripe', 0xd8d0b7, 0.03, 0.68);
   const glass = metal('Blue-green safety glass', 0x829c9a, 0.25, 0.12,
     { transparent: true, opacity: 0.49, depthWrite: false });
   const lens = metal('Fluted headlamp glass', 0xd5ded7, 0.43, 0.18);
@@ -110,7 +110,7 @@ export function buildExterior(THREE) {
     return obj;
   }
 
-  const nose = 1.854, tail = -1.846, axle = 1.1425, tireRadius = 0.284, archRadius = 0.317;
+  const nose = 1.854, tail = -1.846, archRadius = 0.317;
   const widthSections = [[tail,.634],[-1.79,.68],[-1.58,.716],[-1.18,.734],[-.62,.736],
     [.18,.733],[.85,.738],[1.21,.742],[1.62,.727],[1.80,.694],[nose,.653]];
   const beltSections = [[tail,.795],[-1.75,.835],[-1.42,.858],[-.92,.882],[-.35,.899],
@@ -312,37 +312,7 @@ export function buildExterior(THREE) {
     oval(1.135,1.019,side*.775,.005,.036,.044,satin);
   }
 
-  // Rolling assemblies. Turned profiles create the changing highlights on the
-  // polished wheel covers, with separate radial openings in the pressed-steel rim.
-  for (const x of [-axle,axle]) for(const sign of [-1,1]) {
-    const axis=v(0,0,sign), origin=v(x,tireRadius,.637*sign);
-    const lathe=(profile,material,segments=56)=>revolution(profile,segments,material,origin,axis);
-    lathe([[.153,-.063],[.214,-.076],[.255,-.070],[.275,-.056],[.283,-.039],[.284,.034],
-      [.280,.052],[.271,.063],[.252,.070],[.221,.074],[.172,.070],[.153,.063],[.153,-.063]],rubber);
-    // Narrow raised rings and a single white stripe on the original-style cross-ply tire.
-    for (const [r,z,dr,m] of [[.261,.067,.002,tread],[.246,.072,.0025,tread],
-      [.212,.075,.006,ivory],[.182,.072,.002,tread]]) {
-      lathe([[r-dr,z-.001],[r-dr*.75,z],[r+dr*.75,z],[r+dr,z-.001]],m);
-    }
-    for(const z of [-.036,-.013,.012,.036]) {
-      lathe([[.284,z-.0017],[.2845,z],[.284,z+.0017]],tread,64);
-    }
-    lathe([[.001,.055],[.14,.055],[.152,.065],[.159,.075],[.167,.073],[.172,.067]],steel);
-    lathe([[.153,.067],[.157,.073],[.164,.075],[.167,.072],[.169,.069]],chrome);
-    lathe([[.001,.106],[.052,.107],[.074,.103],[.092,.096],[.104,.085],
-      [.116,.083],[.123,.087],[.132,.086],[.141,.077],[.154,.072]],chrome);
-    lathe([[.104,.085],[.109,.084],[.113,.084],[.114,.085]],steel);
-    for (let i=0;i<14;i++) {
-      const a=2*PI*i/14, radius=.145;
-      const slot=oval(x+radius*Math.cos(a),tireRadius+radius*Math.sin(a),
-        sign*(.637+.077),.0045,.010,.003,steel);
-      slot.rotation.z=a;
-    }
-    lathe([[.001,.111],[.019,.111],[.022,.108],[.022,.106]],satin,32);
-    const stem=sidePoint(x+.126,tireRadius+.088,sign);
-    stem.z=sign*.714;
-    oval(stem.x,stem.y,stem.z,.004,.005,.010,black);
-  }
+  root.add(buildWheels(THREE));
 
   // End panels bow forward at the center and meet the side surfaces at each corner.
   function endPoint(sign,zNorm,h) {
