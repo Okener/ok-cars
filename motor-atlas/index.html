@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f9f7">
+  <meta name="description" content="Inspect the first-generation Toyota Corolla in an interactive 3D teardown workspace. Explore five layers from bodywork to the K-series engine.">
+  <title>Motor Atlas · Toyota Corolla E10</title>
+  <link rel="icon" href="/mark.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="app-header"><div class="header-inner">
+    <div class="brand"><img src="/mark.svg" alt="" width="32" height="32"><span>Motor Atlas</span></div>
+    <span class="brand-divider"></span><span class="app-name">Teardown studio</span>
+    <button id="guide" class="guide-button" type="button"><i data-icon="book"></i>Viewer guide</button>
+  </div></header>
+  <main>
+    <div class="vehicle-heading">
+      <div><h1 id="vehicle-title">Toyota Corolla E10</h1><div id="vehicle-meta" class="vehicle-meta"></div></div>
+      <button id="specifications" class="button" type="button"><i data-icon="list"></i>Vehicle specs</button>
+    </div>
+    <div class="workspace">
+      <section class="viewport-box" aria-label="Interactive three-dimensional model">
+        <div id="viewport" class="viewport" data-mode="orbit" data-ready="false">
+          <div class="viewport-mark tl"></div><div class="viewport-mark tr"></div><div class="viewport-mark bl"></div><div class="viewport-mark br"></div>
+          <div class="stage-header">
+            <span class="viewport-label"><i data-icon="cube"></i>3D VIEWPORT</span>
+            <label class="camera-menu"><span class="sr-only">Camera view</span><select id="camera-view">
+              <option value="perspective">Perspective</option><option value="side">Side view</option><option value="front">Front view</option><option value="top">Top view</option><option value="custom" hidden>Free orbit</option>
+            </select><i data-icon="chevron"></i></label>
+          </div>
+          <div id="model-host" tabindex="0" role="region" aria-label="3D model. Use arrow keys to rotate, plus or minus to zoom, and R to reset."></div>
+          <div class="stage-message" id="stage-message" role="status">Loading 3D model…</div>
+          <div class="view-tools">
+            <svg id="axis" viewBox="0 0 64 60" aria-label="Model orientation" role="img"></svg>
+            <div class="zoom-group">
+              <button type="button" id="zoom-out" title="Zoom out (−)" aria-label="Zoom out"><i data-icon="minus"></i></button>
+              <button type="button" id="zoom-in" title="Zoom in (+)" aria-label="Zoom in"><i data-icon="plus"></i></button>
+              <span></span><button type="button" id="reset" title="Reset view (R)" aria-label="Reset view"><i data-icon="fit"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="viewport-footer">
+          <div class="mode-buttons" aria-label="Pointer mode">
+            <button id="orbit" type="button" aria-pressed="true"><i data-icon="orbit"></i>Orbit</button>
+            <button id="pan" type="button" aria-pressed="false"><i data-icon="hand"></i>Pan</button>
+          </div>
+          <div class="mouse-hints"><i data-icon="mouse"></i><span id="drag-hint">Drag to rotate</span><b>·</b><span>Scroll to zoom</span></div>
+        </div>
+      </section>
+      <aside class="config">
+        <h2><i data-icon="tune"></i>Configuration</h2>
+        <div class="field"><label for="make">Make</label><div class="select-wrap"><select id="make"></select><i data-icon="chevron"></i></div></div>
+        <div class="field"><label for="model">Model / generation</label><div class="select-wrap"><select id="model"></select><i data-icon="chevron"></i></div></div>
+        <div class="field"><label for="layer">Layer</label><div class="select-wrap layer-select"><i class="field-icon" data-icon="layers"></i><select id="layer"></select><i data-icon="chevron"></i></div></div>
+        <div class="layer-note" aria-live="polite"><div class="small-label"><span class="accent-line"></span>Layer notes</div><p id="layer-description"></p></div>
+      </aside>
+    </div>
+    <section class="layer-browser" aria-labelledby="layer-title">
+      <div class="section-title"><h2 id="layer-title">Teardown layers</h2><span id="layer-counter"></span></div>
+      <div class="layer-cards" id="layer-cards" role="group" aria-label="Select a teardown layer"></div>
+    </section>
+  </main>
+  <dialog id="dialog" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title"></h2><button id="dialog-close" type="button" aria-label="Close dialog"><i data-icon="close"></i></button></div><div id="dialog-content"></div></dialog>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
